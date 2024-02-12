@@ -1,0 +1,23 @@
+# docker-compose.yml のファイルフォーマットです。
+# https://docs.docker.jp/compose/compose-file/compose-versioning.html#compose-file-version-3
+version: '3.8'
+
+# service = container
+services:
+
+  nuxt3-service:
+    container_name: nuxt3-container
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    # NOTE: 他のプロジェクトとの重複を避けるため、変更している。
+    ports:
+      - 3005:3000
+    # tty, stdin_open しておくと exec するときに -it がいらないみたい。
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/app
+    # NOTE: 開発環境では .env を使うし、本番環境では .env を (GitHub Actions が) 上書きして使うことを想定。
+    environment:
+      - FOO=${FOO}
