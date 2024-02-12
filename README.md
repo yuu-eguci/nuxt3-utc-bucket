@@ -1,9 +1,10 @@
 nuxt3-utc-bucket
 ===
 
-✌🏽✌🏽 Docker + Yarn + Nuxt3 + TypeScript + Vuetify + GitHub Pages
+✌🏽✌🏽 Docker + Yarn + Nuxt3 + TypeScript + Vuetify + GitHub Pages + Copy of nuxt-utc-bucket
 
 - なんか PC に volta が入っていて、 yarn のバージョンだの何だとが面倒くさい。やっぱ Docker がナンバーワンだろうということで。
+- Nuxt3 の SPA を使いこなせるようになるため、 nuxt-utc-bucket のコピーを Nuxt3 で作るのが目標だよ。
 
 ## Setup
 
