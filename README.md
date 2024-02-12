@@ -9,6 +9,7 @@ nuxt3-utc-bucket
 ## Setup
 
 ```bash
+# やっぱり Docker が最高だよな。
 cp ./local.env ./.env; docker compose up -d; docker compose exec nuxt3-service sh
 
 node --version
@@ -17,6 +18,12 @@ node --version
 yarn --version
 # --> 1.22.19
 # NOTE: 今回いちいち Docker にしたのは、ローカル環境の yarn v4 が邪魔だから。
+
+yarn list nuxt
+# └─ nuxt@3.10.1
+yarn list vuetify
+# └─ vuetify@3.5.3
+# NOTE: warning が出るけど、それは完全一致検索を欠く yarn list が悪い。
 
 yarn install
 yarn dev
