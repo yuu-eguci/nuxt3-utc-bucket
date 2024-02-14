@@ -1,5 +1,7 @@
 <script setup>
   const variants = ['elevated', 'flat', 'tonal', 'outlined']
+  const { $debug } = useNuxtApp()
+  $debug({variants})
 </script>
 
 <template>
