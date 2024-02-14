@@ -15,7 +15,8 @@ export default defineNuxtConfig({
   },
 
   modules: [
-    'vuetify-nuxt-module'
+    'vuetify-nuxt-module',
+    '@nuxt/test-utils/module',
   ],
 
   vuetify: {

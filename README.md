@@ -29,3 +29,11 @@ yarn install
 yarn dev
 # --> http://localhost:3005/ でアクセス。
 ```
+
+## Testing
+
+```bash
+# NOTE: run をつけることで、 vitest はテスト後に自動で終了する。 (終了しないのがデフォルトなのかよ)
+#       https://vitest.dev/guide/cli#vitest-run
+yarn run vitest run
+```
