@@ -44,3 +44,9 @@ yarn run vitest run
 yarn run eslint . --ignore-path .gitignore
 yarn run eslint . --fix --ignore-path .gitignore
 ```
+
+## Type check
+
+```bash
+yarn run nuxi typecheck
+```
