@@ -1,12 +1,14 @@
 <script setup lang="ts">
-  const variants = ['elevated', 'flat', 'tonal', 'outlined']
+  // NOTE: ヤバ。
+  const variants: Array<NonNullable<"elevated" | "flat" | "tonal" | "outlined" | "text" | "plain"> | undefined>
+    = ['elevated', 'flat', 'tonal', 'outlined']
   const { $debug } = useNuxtApp()
   $debug({variants})
   // auto-import が utils/Foo が読んだ。
-  $debug(new Foo('a', 'b'))
+  // $debug(new Foo('a', 'b'))
   // 手動で utils/Bar を読んだ。
-  import { Foo } from './utils/Bar'
-  $debug(Foo(1, 2))
+  // import { Foo } from './utils/Bar'
+  // $debug(Foo(1, 2))
   // ……いやこわっ!! auto-import こわっ!!
 </script>
 
