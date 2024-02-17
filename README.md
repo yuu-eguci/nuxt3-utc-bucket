@@ -37,3 +37,10 @@ yarn dev
 #       https://vitest.dev/guide/cli#vitest-run
 yarn run vitest run
 ```
+
+## Linting
+
+```bash
+yarn run eslint . --ignore-path .gitignore
+yarn run eslint . --fix --ignore-path .gitignore
+```

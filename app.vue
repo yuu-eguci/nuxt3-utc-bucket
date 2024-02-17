@@ -13,7 +13,10 @@
 <template>
   <div>
     <v-container>
-      <v-row align="center" justify="center">
+      <v-row
+        align="center"
+        justify="center"
+      >
         <v-col
           v-for="(variant, i) in variants"
           :key="i"
@@ -32,7 +35,9 @@
                 <div class="text-h6 mb-1">
                   Headline
                 </div>
-                <div class="text-caption">Greyhound divisely hello coldly fonwderfully</div>
+                <div class="text-caption">
+                  Greyhound divisely hello coldly fonwderfully
+                </div>
               </div>
             </v-card-item>
 
