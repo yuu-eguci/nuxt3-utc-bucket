@@ -5,6 +5,7 @@ nuxt3-utc-bucket
 
 - なんか PC に volta が入っていて、 yarn のバージョンだの何だとが面倒くさい。やっぱ Docker がナンバーワンだろうということで。
 - Nuxt3 の SPA を使いこなせるようになるため、 nuxt-utc-bucket のコピーを Nuxt3 で作るのが目標だよ。
+- Nuxt3 と TypeScript はやっぱなんか不安定な気がする。なんか謎のエラーがでたら、まずは `yarn dev` を再起動してみよう。
 
 ## Setup
 
