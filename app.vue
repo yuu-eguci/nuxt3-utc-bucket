@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
   const variants = ['elevated', 'flat', 'tonal', 'outlined']
   const { $debug } = useNuxtApp()
   $debug({variants})
