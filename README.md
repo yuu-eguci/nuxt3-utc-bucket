@@ -13,6 +13,14 @@ nuxt3-utc-bucket
 # やっぱり Docker が最高だよな。
 cp ./local.env ./.env; docker compose up -d; docker compose exec nuxt3-service sh
 
+yarn install; yarn dev
+# --> http://localhost:3005/ でアクセス。
+```
+
+```bash
+# 各ソフトのバージョン情報。
+# こんな感じになっているはず。
+
 node --version
 # --> v20.11.0
 
@@ -25,10 +33,6 @@ yarn list nuxt
 yarn list vuetify
 # └─ vuetify@3.5.3
 # NOTE: warning が出るけど、それは完全一致検索を欠く yarn list が悪い。
-
-yarn install
-yarn dev
-# --> http://localhost:3005/ でアクセス。
 ```
 
 ## Testing
