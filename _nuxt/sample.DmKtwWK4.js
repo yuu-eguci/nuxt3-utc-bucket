@@ -1,0 +1,1 @@
+import{_ as o,v as s,aE as a,x as e,t as l}from"./entry.BEsZnlG0.js";const n={},r=e("div",null," App header (sample layout) ",-1),c=e("div",null," App footer (sample layout) ",-1);function d(t,_){return l(),s("div",null,[r,a(t.$slots,"default"),c])}const u=o(n,[["render",d]]);export{u as default};
