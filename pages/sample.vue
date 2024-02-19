@@ -1,3 +1,6 @@
+DOC: layout/sample.vue と pages/sample.vue はノートです。
+     作るときの参考。消さずにとっておく。
+
 DOC: pages という機能。
      ページを利用するには、 pages/index.vue ファイルを作成し、 <NuxtPage /> コンポーネントを app.vue に追加する。
      ただ、 app.vue は無くてもいい。その場合、 index.vue が勝手にトップページになる。
