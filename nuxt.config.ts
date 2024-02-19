@@ -22,6 +22,7 @@ export default defineNuxtConfig({
   modules: [
     'vuetify-nuxt-module',
     '@nuxt/test-utils/module',
+    '@nuxtjs/i18n',
   ],
 
   vuetify: {
@@ -31,6 +32,12 @@ export default defineNuxtConfig({
     vuetifyOptions: {
       /* vuetify options */
     }
+  },
+
+  i18n: {
+    // NOTE: @nuxtjs/i18n 公式ページのまま。
+    //       https://i18n.nuxtjs.org/docs/getting-started/usage
+    vueI18n: './i18n.config.ts',
   },
 
   typescript: {

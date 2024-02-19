@@ -78,6 +78,10 @@ const myMethod = () => {
   $debug('Sample page の method が呼ばれた!')
   $debug(myData.value, myObject)
 }
+
+// NOTE: @nuxtjs/i18n 公式ページのまま。
+//       https://i18n.nuxtjs.org/docs/getting-started/usage
+const { locale } = useI18n()
 </script>
 
 <template>
@@ -108,6 +112,34 @@ const myMethod = () => {
                 Greyhound divisely hello coldly fonwderfully
               </div>
             </div>
+          </v-card-item>
+
+          <v-card-actions>
+            <v-btn
+              @click="myMethod"
+            >
+              Button
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+      <v-col>
+        <v-card
+          class="mx-auto"
+          max-width="344"
+        >
+          <v-card-item>
+            <form>
+              <select v-model="locale">
+                <option value="en">
+                  en
+                </option>
+                <option value="ja">
+                  ja
+                </option>
+              </select>
+              <p>{{ $t('welcome') }}</p>
+            </form>
           </v-card-item>
 
           <v-card-actions>
