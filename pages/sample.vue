@@ -10,7 +10,7 @@ const { $debug } = useNuxtApp()
 
 // NOTE: この component の layout とかを設定するやつ。
 definePageMeta({
-  layout: 'sample',
+  layout: 'sample-layout',
 })
 
 // NOTE: Nuxt2 の props は、 Nuxt3 ではこう書けばいい。
