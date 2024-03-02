@@ -14,6 +14,8 @@
 export default defineI18nConfig(() => ({
   legacy: false,
   locale: 'en',
+  // NOTE: 大きくなってきたら、別ファイルに切り出す。
+  //       import JA_TRANSLATION from './locales/ja/translation.json';
   messages: {
     en: {
       welcome: 'Welcome'
