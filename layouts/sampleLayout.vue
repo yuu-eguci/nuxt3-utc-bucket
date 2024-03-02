@@ -7,9 +7,9 @@ DOC: layouts という機能。
 
 <template>
   <div>
-    <div>
+    <SampleHeader>
       App header (sample layout)
-    </div>
+    </SampleHeader>
     <slot />
     <div>
       App footer (sample layout)
