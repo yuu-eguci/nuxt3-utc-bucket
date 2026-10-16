@@ -1,7 +1,13 @@
 name: cd
 
+# NOTE: main への push では、 ci.yml (lint / typecheck / test / e2e / generate) が成功したときだけ deploy する。
+#       https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run
 on:
-  push:
+  workflow_run:
+    workflows:
+      - ci
+    types:
+      - completed
     branches:
       - main
 
@@ -17,6 +23,7 @@ concurrency:
 jobs:
   cd:
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
 
     steps:
       - name: Checkout 🛎

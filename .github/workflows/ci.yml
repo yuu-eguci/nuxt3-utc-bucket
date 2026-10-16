@@ -1,7 +1,8 @@
 name: ci
 
-# NOTE: main への push と PR で lint / typecheck / test / generate を回す。
+# NOTE: main への push と PR で lint / typecheck / test / e2e / generate を回す。
 #       generate まで回すのは、 GitHub Pages 用の静的ビルドが壊れていないかを CD の前に知るため。
+#       cd.yml はこの workflow が main で成功したときだけ (workflow_run で) 動く。
 on:
   push:
     branches:
@@ -41,6 +42,12 @@ jobs:
 
       - name: Run tests 🧪
         run: yarn test
+
+      - name: Install Chromium for e2e 🌐
+        run: yarn playwright-core install --with-deps chromium
+
+      - name: Run e2e tests (build + Chromium) 🧭
+        run: yarn test:e2e
 
       - name: Run generate (GitHub Pages 設定でビルドできるか確認) 👷
         run: env $(grep -v '^#' ./.github-pages.env | xargs) yarn generate

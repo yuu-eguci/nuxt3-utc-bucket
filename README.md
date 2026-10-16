@@ -9,7 +9,7 @@ pages / layouts / middleware / plugins / i18n のサンプルと、学びノー�
 - Docker: 対応! (node:24-alpine, Yarn 1.22)
 - Node.js: 24!
 - Linter: ESLint 10 + @nuxt/eslint (flat config, stylistic)!
-- Test: Vitest 5 + @nuxt/test-utils + happy-dom!
+- Test: Vitest 5 + @nuxt/test-utils + happy-dom (unit) / Chromium (e2e)!
 - Nuxt: 3.21!
 - Vuetify: 3.13 (vuetify-nuxt-module 1.0.0-rc)!
 - @nuxtjs/i18n: 10!
@@ -34,8 +34,9 @@ docker compose exec nuxt3-service sh
 
 yarn lint          # ESLint (--fix したいときは yarn lint:fix)
 yarn typecheck     # vue-tsc による型チェック
-yarn test          # Vitest (watch したいときは yarn test:watch)
-yarn generate      # 静的サイトを ./dist に生成 (GitHub Pages 用は下を参照)
+yarn test          # Vitest の unit テスト (watch したいときは yarn test:watch)
+yarn test:e2e      # アプリをビルドして Chromium で開く e2e テスト (test/e2e)
+yarn generate      # 静的サイトを ./.output/public に生成 (./dist はコンテナ内向けの symlink。 GitHub Pages 用は下を参照)
 ```
 
 ```bash
@@ -50,8 +51,8 @@ python3 -m http.server 3006 -d /tmp/pages   # --> http://localhost:3006/nuxt3-ut
 
 ## CI / CD
 
-- `ci.yml` : main への push と PR で lint / typecheck / test / generate を回す。
-- `cd.yml` : main への push で `yarn generate` し、 `.output/public` を `gh-pages` ブランチへ publish する (GitHub Pages)。
+- `ci.yml` : main への push と PR で lint / typecheck / test / e2e / generate を回す。
+- `cd.yml` : main で `ci` が成功したあと (workflow_run) に `yarn generate` し、 `.output/public` を `gh-pages` ブランチへ publish する (GitHub Pages)。手動実行 (workflow_dispatch) もできる。
 - `.github-pages.env` が Pages 用の環境変数 (`ROUTER_BASE`) を持っている。
 
 ## 環境変数
@@ -63,7 +64,8 @@ python3 -m http.server 3006 -d /tmp/pages   # --> http://localhost:3006/nuxt3-ut
 ## バージョンを確認したいとき
 
 ```bash
-docker compose exec nuxt3-service sh -c 'node --version; yarn --version; yarn list --pattern "^(nuxt|vuetify|@nuxtjs/i18n)$" --depth=0'
+# NOTE: yarn classic の --pattern は正規表現ではなく部分一致 (glob) なので、こう書く。
+docker compose exec nuxt3-service sh -c 'node --version; yarn --version; yarn list --pattern "nuxt|vuetify|@nuxtjs/i18n" --depth=0'
 ```
 
 ## 学びノート

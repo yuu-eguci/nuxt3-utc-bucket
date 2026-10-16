@@ -1,5 +1,7 @@
 // NOTE: インポートしなくてもグローバルに利用可能。
 import { defineNuxtConfig } from 'nuxt/config'
+// NOTE: ufo は Nuxt が依存している URL ユーティリティ。 https://github.com/unjs/ufo
+import { withTrailingSlash } from 'ufo'
 
 // DOC: このファイルは、カスタムスクリプトの追加、モジュールの登録、レンダリングモードの変更など、ドキュメントでしばしば言及される。
 //      ここ↓にオプションが全部ある。
@@ -7,7 +9,8 @@ import { defineNuxtConfig } from 'nuxt/config'
 // NOTE: GitHub Pages ではリポジトリ名がパスの先頭につく (/nuxt3-utc-bucket/) ので、
 //       .github-pages.env の ROUTER_BASE で baseURL を切り替えている。
 //       favicon の href も同じ値を使わないと、 baseURL 配下に置かれた favicon.ico を見つけられない。
-const baseURL = process.env.ROUTER_BASE || '/'
+//       Nuxt は app.baseURL の末尾に / を補うので、こちらも withTrailingSlash で揃えている。
+const baseURL = withTrailingSlash(process.env.ROUTER_BASE || '/')
 
 export default defineNuxtConfig({
   modules: [
@@ -36,9 +39,7 @@ export default defineNuxtConfig({
     // https://nuxt.com/docs/getting-started/seo-meta
     head: {
       title: 'Nuxt3 UTC Bucket',
-      htmlAttrs: {
-        lang: 'en',
-      },
+      // NOTE: <html lang> は app.vue で useLocaleHead を使ってロケールに追従させている。
       link: [
         { rel: 'icon', type: 'image/x-icon', href: `${baseURL}favicon.ico` },
       ],
@@ -88,12 +89,9 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
     // NOTE: GitHub Pages の URL を変えたくないので、ロケールを URL の prefix にしない。
     strategy: 'no_prefix',
-    // NOTE: 選んだロケールを cookie に覚えておく。初回はブラウザの言語設定から選ぶ。
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: 'i18n_redirected',
-      redirectOn: 'root',
-    },
+    // NOTE: detectBrowserLanguage はデフォルトで有効 (初回はブラウザの言語設定から選び、
+    //       setLocale で選んだロケールは cookie "i18n_redirected" に保存される)。
+    //       https://i18n.nuxtjs.org/docs/guide/browser-language-detection
   },
 
   vuetify: {
