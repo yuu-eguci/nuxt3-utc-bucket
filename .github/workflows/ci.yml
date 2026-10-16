@@ -50,4 +50,7 @@ jobs:
         run: yarn test:e2e
 
       - name: Run generate (GitHub Pages 設定でビルドできるか確認) 👷
-        run: env $(grep -v '^#' ./.github-pages.env | xargs) yarn generate
+        # NOTE: set -a で .github-pages.env の変数を export してから generate する。
+        run: |
+          set -a; . ./.github-pages.env; set +a
+          yarn generate

@@ -40,7 +40,10 @@ jobs:
 
       - name: Run generate 👷
         # GitHub Pages 環境用の .env を適用してビルド。
-        run: env $(grep -v '^#' ./.github-pages.env | xargs) yarn generate
+        # NOTE: set -a で .github-pages.env の変数を export してから generate する。
+        run: |
+          set -a; . ./.github-pages.env; set +a
+          yarn generate
 
       - name: Deploy to gh-pages 🚀
         uses: peaceiris/actions-gh-pages@v4

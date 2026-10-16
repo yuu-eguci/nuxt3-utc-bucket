@@ -42,7 +42,9 @@ yarn generate      # 静的サイトを ./.output/public に生成 (./dist は�
 ```bash
 # GitHub Pages 用 (ROUTER_BASE=/nuxt3-utc-bucket/) の静的ビルドを手元で確認する。
 # 出力先は ./.output/public (./dist はそこへの symlink)。
-docker compose exec nuxt3-service sh -c 'env $(grep -v "^#" ./.github-pages.env | xargs) yarn generate'
+# NOTE: Docker のメモリが少ないと dev server と同時に走らせて SIGKILL されることがある。
+#       そのときは `docker compose stop` してから `docker compose run --rm nuxt3-service sh -c '...'` で実行する。
+docker compose exec nuxt3-service sh -c 'set -a; . ./.github-pages.env; set +a; yarn generate'
 
 # Pages と同じく /nuxt3-utc-bucket/ 配下で配信してブラウザで見る (ホスト側で実行)。
 mkdir -p /tmp/pages && ln -sfn "$PWD/.output/public" /tmp/pages/nuxt3-utc-bucket
