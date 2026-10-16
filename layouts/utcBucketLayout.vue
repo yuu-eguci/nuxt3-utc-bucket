@@ -1,8 +1,9 @@
 <template>
-  <v-app theme="dark">
+  <v-app>
     <!--
       https://vuetifyjs.com/en/api/v-app/
       https://vuetifyjs.com/en/features/theme/
+      NOTE: dark テーマは nuxt.config.ts の vuetifyOptions.theme.defaultTheme で設定している。
       NOTE: template 直下 (v-app の外) にコメントを置くと vue/no-multiple-template-root に怒られるので中に書く。
     -->
     <!--
@@ -16,6 +17,8 @@
           size="large"
         />
       </template>
+      <!-- https://vuetifyjs.com/en/api/v-app-bar-title/ -->
+      <v-app-bar-title>Nuxt3 UTC Bucket</v-app-bar-title>
     </v-app-bar>
     <slot />
     <!--

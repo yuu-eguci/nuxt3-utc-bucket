@@ -101,7 +101,11 @@ export default defineNuxtConfig({
       /* module specific options */
     },
     vuetifyOptions: {
-      /* vuetify options */
+      // NOTE: テーマはここで一括設定する (layouts で theme="dark" を書くより、アプリ全体で一貫する)。
+      //       https://vuetifyjs.com/en/features/theme/
+      theme: {
+        defaultTheme: 'dark',
+      },
     },
   },
 })
