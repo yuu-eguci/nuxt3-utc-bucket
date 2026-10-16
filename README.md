@@ -71,6 +71,11 @@ python3 -m http.server 3006 -d /tmp/pages   # --> http://localhost:3006/nuxt3-ut
 docker compose exec nuxt3-service sh -c 'node --version; yarn --version; yarn list --pattern "nuxt|vuetify|@nuxtjs/i18n" --depth=0'
 ```
 
+## 依存の脆弱性 (yarn audit)
+
+- `yarn audit` で残っているのは、ビルド/開発ツールの中でしか使われない transitive な依存 (`node-forge` via listhen, `braces` via micromatch) で、修正版が未公開のもの。生成される静的サイトには含まれない。
+- transitive な依存を範囲内の最新にしたいときは `yarn.lock` を消して `yarn install` し直す (yarn classic は既存の解決を使い回すため)。
+
 ## 学びノート
 
 - Nuxt3 と TypeScript はやっぱなんか不安定な気がする。なんか謎のエラーがでたら、まずは `yarn dev` を再起動してみよう。
