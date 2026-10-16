@@ -54,3 +54,13 @@ jobs:
         run: |
           set -a; . ./.github-pages.env; set +a
           yarn generate
+
+      - name: Check generated output (Pages 用のパスになっているか) 🔎
+        run: |
+          test -f .output/public/index.html
+          test -f .output/public/sample/index.html
+          test -f .output/public/404.html
+          grep -q 'href="/nuxt3-utc-bucket/favicon.ico"' .output/public/index.html
+          grep -q 'href="/nuxt3-utc-bucket/sample' .output/public/index.html
+          ! grep -rq 'src="/_nuxt' .output/public
+          ! grep -rq 'cdn.jsdelivr.net' .output/public/index.html

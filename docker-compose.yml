@@ -10,8 +10,11 @@ services:
       context: ./
       dockerfile: Dockerfile
     # NOTE: 他のプロジェクトとの重複を避けるため、変更している。
+    #       127.0.0.1 を付けて、同じ LAN の他の端末から dev server (と Nuxt DevTools) が見えないようにしている。
     ports:
-      - 3005:3000
+      - 127.0.0.1:3005:3000
+    # NOTE: root ではなく node ユーザ (uid 1000) で動かす。 Linux ホストで node_modules などが root 所有になるのを防ぐ。
+    user: node
     # tty, stdin_open しておくと exec するときに -it がいらないみたい。
     tty: true
     stdin_open: true
@@ -20,5 +23,7 @@ services:
     # NOTE: 開発環境では .env (local.env のコピー) を使う。
     #       本番 (GitHub Pages) は Docker を使わず、 cd.yml が .github-pages.env を env で渡して generate する。
     #       `docker compose up` だけで `yarn install` + `yarn dev` が走る (Dockerfile の CMD)。
+    #       .env が無くても (required: false) Nuxt のデフォルト値で起動できる。
     env_file:
-      - .env
+      - path: .env
+        required: false

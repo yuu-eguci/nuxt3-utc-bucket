@@ -1,5 +1,5 @@
 <!--
-DOC: layout/sample.vue と pages/sample.vue はノートです。
+DOC: layouts/sampleLayout.vue と pages/sample.vue はノートです。
      作るときの参考。消さずにとっておく。
 
 DOC: pages という機能。
@@ -84,10 +84,15 @@ const myMethod = () => {
 // NOTE: @nuxtjs/i18n 公式ページを参考に。
 //       https://i18n.nuxtjs.org/docs/getting-started/usage
 //       locale.value を直接書き換えると cookie に保存されないので、切り替えは setLocale でやる。
-//       (nuxt.config.ts の detectBrowserLanguage.useCookie 参照)
-const { locale, setLocale } = useI18n()
+//       (nuxt.config.ts の i18n.detectBrowserLanguage 参照)
+//       select の値は DOM をいじれば何でも入れられるので、対応ロケールかどうかを確認してから渡す。
+const { locale, locales, setLocale } = useI18n()
 const onChangeLocale = (event: Event) => {
-  setLocale((event.target as HTMLSelectElement).value as typeof locale.value)
+  const value = (event.target as HTMLSelectElement).value
+  const supported = locales.value.find(l => l.code === value)
+  if (supported) {
+    setLocale(supported.code)
+  }
 }
 </script>
 

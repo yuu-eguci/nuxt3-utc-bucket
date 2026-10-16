@@ -72,7 +72,9 @@ export default defineNuxtConfig({
   },
 
   typescript: {
-    typeCheck: true,
+    // NOTE: dev / build 中にも vue-tsc を走らせる。 CI では `yarn typecheck` を別 step で回すので、
+    //       e2e の build と generate で二重三重に走らないよう CI では無効にしている。
+    typeCheck: !process.env.CI,
   },
 
   eslint: {
@@ -92,9 +94,15 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
     // NOTE: GitHub Pages の URL を変えたくないので、ロケールを URL の prefix にしない。
     strategy: 'no_prefix',
-    // NOTE: detectBrowserLanguage はデフォルトで有効 (初回はブラウザの言語設定から選び、
-    //       setLocale で選んだロケールは cookie "i18n_redirected" に保存される)。
+    // NOTE: 初回はブラウザの言語設定から選び、 setLocale で選んだロケールは cookie に保存される。
+    //       GitHub Pages は同じ origin (yuu-eguci.github.io) を他のプロジェクトとも共有するので、
+    //       cookie 名はデフォルトの i18n_redirected ではなくこのプロジェクト固有にしている。
     //       https://i18n.nuxtjs.org/docs/guide/browser-language-detection
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'nuxt3_utc_bucket_locale',
+      cookieSecure: true,
+    },
   },
 
   vuetify: {
@@ -107,6 +115,9 @@ export default defineNuxtConfig({
       theme: {
         defaultTheme: 'dark',
       },
+      // NOTE: アイコンは @mdi/font を devDependencies に入れてバンドルしている。
+      //       入っていないと vuetify-nuxt-module が jsdelivr の CDN (古い 5.x) から読み込む。
+      //       https://nuxt.vuetifyjs.com/guide/icons/
     },
   },
 })

@@ -2,6 +2,8 @@ name: cd
 
 # NOTE: main への push では、 ci.yml (lint / typecheck / test / e2e / generate) が成功したときだけ deploy する。
 #       https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run
+#       workflow_run の branches フィルタは「ci を起動した側の head branch」を見るので、
+#       fork の PR (head branch 名が main) でも発火しうる。 job の if で push イベント + 自リポジトリに限定している。
 on:
   workflow_run:
     workflows:
@@ -23,11 +25,21 @@ concurrency:
 jobs:
   cd:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.head_branch == 'main' &&
+        github.event.workflow_run.head_repository.full_name == github.repository
+      )
 
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
+        with:
+          # NOTE: ci が検証したのと同じコミットを deploy する (workflow_dispatch のときは HEAD)。
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup node env 🏗
         uses: actions/setup-node@v4
@@ -43,6 +55,8 @@ jobs:
         # NOTE: set -a で .github-pages.env の変数を export してから generate する。
         run: |
           set -a; . ./.github-pages.env; set +a
+          # NOTE: footer に出す APP_VERSION は deploy したコミットの短い SHA にする (.github-pages.env の値は fallback)。
+          export APP_VERSION="$(git rev-parse --short HEAD)"
           yarn generate
 
       - name: Deploy to gh-pages 🚀

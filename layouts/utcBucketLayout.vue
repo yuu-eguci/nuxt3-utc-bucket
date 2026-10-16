@@ -24,6 +24,16 @@ const { public: { appVersion } } = useRuntimeConfig()
       </template>
       <!-- https://vuetifyjs.com/en/api/v-app-bar-title/ -->
       <v-app-bar-title>Nuxt3 UTC Bucket</v-app-bar-title>
+      <!--
+        NOTE: v-btn の to は NuxtLink として扱われ、 app.baseURL (GitHub Pages では /nuxt3-utc-bucket/) が付く。
+              https://nuxt.com/docs/api/components/nuxt-link
+      -->
+      <v-btn
+        to="/sample"
+        variant="text"
+      >
+        Sample
+      </v-btn>
     </v-app-bar>
     <slot />
     <!--

@@ -29,6 +29,23 @@ describe('pages (browser)', () => {
     await page.close()
   })
 
+  it('navigates index -> sample -> index with NuxtLink (no full reload)', async () => {
+    const page = await createPage('/')
+    // NOTE: window に印を付けておき、遷移後も残っていればフルリロードしていないと分かる。
+    await page.evaluate(() => {
+      (window as unknown as { __marker: string }).__marker = 'kept'
+    })
+    await page.click('header.v-app-bar a:has-text("Sample")')
+    await page.waitForURL(/\/sample$/)
+    // NOTE: クライアント側遷移は非同期で描画されるので、要素が出るまで待つ。
+    await expect.poll(() => page.locator('.v-card .text-overline').count()).toBe(4)
+    await page.click('a:has-text("トップへ戻る")')
+    await page.waitForURL(/\/$/)
+    await expect.poll(() => page.locator('header.v-app-bar .v-app-bar-title').count()).toBe(1)
+    expect(await page.evaluate(() => (window as unknown as { __marker?: string }).__marker)).toBe('kept')
+    await page.close()
+  })
+
   it('sample page renders 4 card variants and switches i18n locale', async () => {
     const page = await createPage('/sample')
     expect(await page.locator('.v-card .text-overline').allTextContents())
