@@ -1,9 +1,20 @@
 name: ci
 
-# NOTE: Nuxt3 の初期状態には lint も test もないので ci は使わないんだけど、
-#       nuxt-utc-bucket のコピーを作ることが repository の目標なので置いておく。
+# NOTE: main への push と PR で lint / typecheck / test / generate を回す。
+#       generate まで回すのは、 GitHub Pages 用の静的ビルドが壊れていないかを CD の前に知るため。
 on:
+  push:
+    branches:
+      - main
+  pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   ci:
@@ -16,27 +27,20 @@ jobs:
       - name: Setup node env 🏗
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          check-latest: true
-
-      - name: Get yarn cache directory path 🛠
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache node_modules 📦
-        uses: actions/cache@v4
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version-file: .node-version
+          cache: yarn
 
       - name: Install dependencies 👨🏻‍💻
-        run: yarn
+        run: yarn install --frozen-lockfile
 
       - name: Run linter 👀
         run: yarn lint
 
+      - name: Run type check 🔍
+        run: yarn typecheck
+
       - name: Run tests 🧪
-        run: yarn test --passWithNoTests
+        run: yarn test
+
+      - name: Run generate (GitHub Pages 設定でビルドできるか確認) 👷
+        run: env $(grep -v '^#' ./.github-pages.env | xargs) yarn generate

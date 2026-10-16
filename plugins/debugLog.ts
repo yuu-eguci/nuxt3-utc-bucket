@@ -4,13 +4,15 @@
 // こういう風に使う↓
 // const { $debug } = useNuxtApp()
 // $debug({variants})
-export default defineNuxtPlugin(nuxtApp => {
+export default defineNuxtPlugin((nuxtApp) => {
   // プラグインに渡される唯一の引数は nuxtApp。
 
   // 開発環境でのみ console.info を実行する `debug` 関数を提供。
-  const debug = (...args: any[]) => {
-    // Nuxt 3 では `context.isDev` が `process.dev` に変更されているらしい。
-    if (process.dev) {
+  const debug = (...args: unknown[]) => {
+    // Nuxt 3 では `context.isDev` が `process.dev` に変更されていたけれど、
+    // それも deprecated になって、いまは `import.meta.dev` を使う。
+    // https://nuxt.com/docs/api/advanced/import-meta
+    if (import.meta.dev) {
       console.info(...args)
     }
   }
@@ -34,6 +36,6 @@ export default defineNuxtPlugin(nuxtApp => {
 //       $debug を使うってことはこのファイルを絶対見るんだからここでよくね? って感じ。
 declare module '#app' {
   interface NuxtApp {
-    $debug: (...args: any[]) => void;
+    $debug: (...args: unknown[]) => void
   }
 }

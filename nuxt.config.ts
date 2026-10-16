@@ -4,44 +4,45 @@ import { defineNuxtConfig } from 'nuxt/config'
 // DOC: このファイルは、カスタムスクリプトの追加、モジュールの登録、レンダリングモードの変更など、ドキュメントでしばしば言及される。
 //      ここ↓にオプションが全部ある。
 // https://nuxt.com/docs/api/configuration/nuxt-config
+// NOTE: GitHub Pages ではリポジトリ名がパスの先頭につく (/nuxt3-utc-bucket/) ので、
+//       .github-pages.env の ROUTER_BASE で baseURL を切り替えている。
+//       favicon の href も同じ値を使わないと、 baseURL 配下に置かれた favicon.ico を見つけられない。
+const baseURL = process.env.ROUTER_BASE || '/'
+
 export default defineNuxtConfig({
-  app: {
-    // https://nuxt.com/docs/api/nuxt-config#baseurl
-    // Default: '/'
-    baseURL: process.env.ROUTER_BASE || '/',
-
-    // https://nuxt.com/docs/getting-started/seo-meta
-    head: {
-      title: 'Nuxt3 UTC Bucket',
-      link: [
-        { rel: 'icon', type: 'image/x-icon', href: `${process.env.ROUTER_BASE}favicon.ico` },
-      ],
-    }
-  },
-
   modules: [
+    // NOTE: ESLint の flat config (.nuxt/eslint.config.mjs) を生成してくれるモジュール。
+    //       https://eslint.nuxt.com/packages/module
+    '@nuxt/eslint',
     'vuetify-nuxt-module',
     '@nuxt/test-utils/module',
     '@nuxtjs/i18n',
   ],
 
-  vuetify: {
-    moduleOptions: {
-      /* module specific options */
+  // NOTE: Pythonista なので暗黙的な import には反対。
+  //       だけれど、これによってコード量を減らすのが Nuxt3 の方針だから、合わせていく。
+  // https://nuxt.com/docs/guide/concepts/auto-imports#disabling-auto-imports
+  imports: {
+    autoImport: true,
+  },
+
+  devtools: { enabled: true },
+
+  app: {
+    // https://nuxt.com/docs/api/nuxt-config#baseurl
+    // Default: '/'
+    baseURL,
+
+    // https://nuxt.com/docs/getting-started/seo-meta
+    head: {
+      title: 'Nuxt3 UTC Bucket',
+      htmlAttrs: {
+        lang: 'en',
+      },
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: `${baseURL}favicon.ico` },
+      ],
     },
-    vuetifyOptions: {
-      /* vuetify options */
-    }
-  },
-
-  i18n: {
-    // NOTE: @nuxtjs/i18n 公式ページのまま。
-    //       https://i18n.nuxtjs.org/docs/getting-started/usage
-    vueI18n: './i18n.config.ts',
-  },
-
-  typescript: {
-    typeCheck: true
   },
 
   // DOC: Environment Variables and Private Tokens
@@ -56,19 +57,51 @@ export default defineNuxtConfig({
   //                  機密性のないプロジェクト設定。
   runtimeConfig: {
     // The private keys which are only available server-side
-    apiSecret: '123',
+    // NOTE: 値は環境変数 NUXT_API_SECRET で上書きされる (Nuxt が runtimeConfig のキー名から自動で読む)。
+    //       プレースホルダでもコードにシークレットは書かないよう、デフォルトは空文字にしている。
+    //       https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables
+    apiSecret: '',
     // Keys within public are also exposed client-side
     public: {
-      apiBase: '/api'
-    }
+      apiBase: '/api',
+    },
   },
 
-  // NOTE: Pythonista なので暗黙的な import には反対。
-  //       だけれど、これによってコード量を減らすのが Nuxt3 の方針だから、合わせていく。
-  // https://nuxt.com/docs/guide/concepts/auto-imports#disabling-auto-imports
-  imports: {
-    autoImport: true
+  typescript: {
+    typeCheck: true,
   },
 
-  devtools: { enabled: true }
+  eslint: {
+    config: {
+      // NOTE: インデントやクォートなどのスタイルも ESLint に見てもらう。
+      //       https://eslint.nuxt.com/packages/module#stylistic
+      stylistic: true,
+    },
+  },
+
+  i18n: {
+    // NOTE: @nuxtjs/i18n v9 以降は i18n/ ディレクトリが基準で、 vueI18n のパスもそこからの相対になる。
+    //       https://i18n.nuxtjs.org/docs/getting-started/usage
+    //       https://i18n.nuxtjs.org/docs/guide/migrating#upgrading-from-nuxtjsi18n-v8x-to-v9x
+    vueI18n: './i18n.config.ts',
+    locales: ['en', 'ja'],
+    defaultLocale: 'en',
+    // NOTE: GitHub Pages の URL を変えたくないので、ロケールを URL の prefix にしない。
+    strategy: 'no_prefix',
+    // NOTE: 選んだロケールを cookie に覚えておく。初回はブラウザの言語設定から選ぶ。
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+    },
+  },
+
+  vuetify: {
+    moduleOptions: {
+      /* module specific options */
+    },
+    vuetifyOptions: {
+      /* vuetify options */
+    },
+  },
 })

@@ -1,9 +1,11 @@
+<!--
 DOC: layout/sample.vue と pages/sample.vue はノートです。
      作るときの参考。消さずにとっておく。
 
 DOC: pages という機能。
      ページを利用するには、 pages/index.vue ファイルを作成し、 <NuxtPage /> コンポーネントを app.vue に追加する。
      ただ、 app.vue は無くてもいい。その場合、 index.vue が勝手にトップページになる。
+-->
 
 <script setup lang="ts">
 const { $debug } = useNuxtApp()
@@ -19,7 +21,7 @@ const props = defineProps({
     type: String,
     required: false,
     default: 'defaultValue',
-  }
+  },
 })
 $debug('Sample page の props', props)
 
@@ -53,7 +55,7 @@ $debug('Sample page の props', props)
 const myData = ref('初期値')
 const myObject = reactive({
   count: 0,
-  text: 'こんにちは'
+  text: 'こんにちは',
 })
 $debug('Sample page の data', myData.value, myObject)
 
@@ -79,9 +81,14 @@ const myMethod = () => {
   $debug(myData.value, myObject)
 }
 
-// NOTE: @nuxtjs/i18n 公式ページのまま。
+// NOTE: @nuxtjs/i18n 公式ページを参考に。
 //       https://i18n.nuxtjs.org/docs/getting-started/usage
-const { locale } = useI18n()
+//       locale.value を直接書き換えると cookie に保存されないので、切り替えは setLocale でやる。
+//       (nuxt.config.ts の detectBrowserLanguage.useCookie 参照)
+const { locale, setLocale } = useI18n()
+const onChangeLocale = (event: Event) => {
+  setLocale((event.target as HTMLSelectElement).value as typeof locale.value)
+}
 </script>
 
 <template>
@@ -130,7 +137,11 @@ const { locale } = useI18n()
         >
           <v-card-item>
             <form>
-              <select v-model="locale">
+              <select
+                aria-label="Language"
+                :value="locale"
+                @change="onChangeLocale"
+              >
                 <option value="en">
                   en
                 </option>

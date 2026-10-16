@@ -11,6 +11,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
   $debug(JSON.stringify({
     hereIs: 'middleware/global-middleware.global.ts',
     from: from.fullPath,
-    to: to.fullPath
+    to: to.fullPath,
   }))
 })

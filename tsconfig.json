@@ -1,13 +1,8 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json",
-
-  "compilerOptions": {
-    "types": [
-        // NOTE: 不要だったけど、もしかしたら、一度こいつを ON にする必要があったのかも……?
-        //       ということで残してある。
-        //       i18n.config.ts 参照。
-        // "@nuxtjs/i18n",
-    ]
-  },
+  // NOTE: 以前は compilerOptions.types に "@nuxtjs/i18n" を足す案を残していたけれど、
+  //       "extends" 先の .nuxt/tsconfig.json が i18n の型もちゃんと読んでいるので不要。
+  //       (i18n/i18n.config.ts の NOTE 参照)
+  //       また、 `nuxt typecheck` が読む JSON パーサは末尾カンマを受け付けないので注意。
+  "extends": "./.nuxt/tsconfig.json"
 }

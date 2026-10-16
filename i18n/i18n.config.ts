@@ -11,6 +11,8 @@
 //       けど実は、 "extends": "./.nuxt/tsconfig.json" の中でちゃんと
 //       "../node_modules/@nuxtjs/i18n/runtime" が読まれており、
 //       時間を置いたら VSCode はちゃんとこれらを認識してくれるのかもしれない。
+// NOTE: v9 以降、このファイルは i18n/ ディレクトリに置く決まり (nuxt.config.ts の i18n.vueI18n 参照)。
+//       locales / defaultLocale は nuxt.config.ts 側で設定している。
 export default defineI18nConfig(() => ({
   legacy: false,
   locale: 'en',
@@ -18,10 +20,10 @@ export default defineI18nConfig(() => ({
   //       import JA_TRANSLATION from './locales/ja/translation.json';
   messages: {
     en: {
-      welcome: 'Welcome'
+      welcome: 'Welcome',
     },
     ja: {
-      welcome: 'よーこそ'
+      welcome: 'よーこそ',
     },
-  }
+  },
 }))
