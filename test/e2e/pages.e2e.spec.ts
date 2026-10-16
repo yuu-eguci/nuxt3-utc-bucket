@@ -23,6 +23,9 @@ describe('pages (browser)', () => {
     expect(await page.locator('html').getAttribute('lang')).toBe('en')
     expect(await page.locator('footer a[aria-label="GitHub repository"]').getAttribute('href'))
       .toBe('https://github.com/yuu-eguci/nuxt3-utc-bucket')
+    // NOTE: APP_VERSION (.env) が runtimeConfig.public.appVersion 経由で footer に出る。未設定なら 'dev'。
+    expect((await page.locator('footer [data-testid="app-version"]').textContent())?.trim())
+      .toBe(process.env.APP_VERSION || 'dev')
     await page.close()
   })
 

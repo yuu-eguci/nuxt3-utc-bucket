@@ -1,3 +1,8 @@
+<script setup lang="ts">
+// NOTE: runtimeConfig.public はクライアント側でも読める。 (nuxt.config.ts の runtimeConfig 参照)
+const { public: { appVersion } } = useRuntimeConfig()
+</script>
+
 <template>
   <v-app>
     <!--
@@ -30,6 +35,10 @@
     >
       <span>
         &copy; {{ new Date().getFullYear() }}
+        <span
+          class="text-caption ml-2"
+          data-testid="app-version"
+        >{{ appVersion }}</span>
       </span>
       <v-spacer />
       <a

@@ -22,7 +22,7 @@ cp ./local.env ./.env && docker compose up
 #     初回は yarn install が走るので少し待ってね。
 ```
 
-- `/` : Vuetify の dark theme レイアウト (`layouts/utcBucketLayout.vue`) + `<NuxtWelcome />`
+- `/` : Vuetify の dark theme レイアウト (`layouts/utcBucketLayout.vue`, footer に `APP_VERSION`) + `<NuxtWelcome />`
 - `/sample` : Vuetify の card / button、 ref / reactive、 i18n の切り替え (en / ja) のサンプル
 - ページ遷移のたびに `middleware/global-middleware.global.ts` が `$debug` でブラウザの console にログを出す (dev のときだけ)
 
@@ -61,6 +61,7 @@ python3 -m http.server 3006 -d /tmp/pages   # --> http://localhost:3006/nuxt3-ut
 
 - `local.env` を `.env` にコピーして使う (開発用)。 `.env` は git 管理外。
 - `ROUTER_BASE` : `app.baseURL` に入る。 GitHub Pages ではリポジトリ名のパスになる。
+- `APP_VERSION` : `runtimeConfig.public.appVersion` としてビルド時に取り込まれ、 `/` の footer に表示される (未設定なら `dev`)。
 - `NUXT_API_SECRET` : `runtimeConfig.apiSecret` を上書きする (サンプル。デフォルトは空文字で、コードにシークレットは書かない)。
 
 ## バージョンを確認したいとき

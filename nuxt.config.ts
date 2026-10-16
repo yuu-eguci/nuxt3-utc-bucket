@@ -65,6 +65,9 @@ export default defineNuxtConfig({
     // Keys within public are also exposed client-side
     public: {
       apiBase: '/api',
+      // NOTE: .env (local.env) / .github-pages.env の APP_VERSION をビルド時に取り込んで、 footer に表示している。
+      //       (static generate なので、ここで読んだ値がそのまま HTML に焼き込まれる)
+      appVersion: process.env.APP_VERSION || 'dev',
     },
   },
 
