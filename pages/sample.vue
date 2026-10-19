@@ -15,6 +15,13 @@ definePageMeta({
   layout: 'sample-layout',
 })
 
+// NOTE: ページごとの <title>。 トップの NuxtWelcome が useHead で付けた title は、
+//       クライアント側遷移で来たときに残ってしまうので、このページでも明示的に設定している。
+//       https://nuxt.com/docs/getting-started/seo-meta
+useHead({
+  title: 'Sample - Nuxt3 UTC Bucket',
+})
+
 // NOTE: Nuxt2 の props は、 Nuxt3 ではこう書けばいい。
 const props = defineProps({
   myProp: {

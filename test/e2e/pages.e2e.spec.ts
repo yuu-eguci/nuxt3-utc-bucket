@@ -39,6 +39,8 @@ describe('pages (browser)', () => {
     await page.waitForURL(/\/sample$/)
     // NOTE: クライアント側遷移は非同期で描画されるので、要素が出るまで待つ。
     await expect.poll(() => page.locator('.v-card .text-overline').count()).toBe(4)
+    // NOTE: NuxtWelcome が useHead で付けた title が残らず、 sample ページ自身の title になること。
+    await expect.poll(() => page.title()).toBe('Sample - Nuxt3 UTC Bucket')
     await page.click('a:has-text("トップへ戻る")')
     await page.waitForURL(/\/$/)
     await expect.poll(() => page.locator('header.v-app-bar .v-app-bar-title').count()).toBe(1)
